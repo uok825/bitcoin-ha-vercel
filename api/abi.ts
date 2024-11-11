@@ -423,3 +423,175 @@ export const betreaAbi = [
     anonymous: false,
   },
 ];
+
+export const betreaConstAbi = [
+  { type: "constructor", inputs: [], stateMutability: "nonpayable" },
+  {
+    type: "function",
+    name: "betCount",
+    inputs: [],
+    outputs: [{ name: "", type: "uint256", internalType: "uint256" }],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "bets",
+    inputs: [{ name: "", type: "uint256", internalType: "uint256" }],
+    outputs: [
+      { name: "player", type: "address", internalType: "address" },
+      {
+        name: "direction",
+        type: "uint8",
+        internalType: "enum BetreaConst.BetDirection",
+      },
+      { name: "timestamp", type: "uint256", internalType: "uint256" },
+      { name: "amount", type: "uint256", internalType: "uint256" },
+      {
+        name: "currentPrice",
+        type: "uint256",
+        internalType: "uint256",
+      },
+      { name: "roundId", type: "uint80", internalType: "uint80" },
+      { name: "settled", type: "bool", internalType: "bool" },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "getLatestPrice",
+    inputs: [],
+    outputs: [
+      { name: "", type: "int256", internalType: "int256" },
+      { name: "", type: "uint80", internalType: "uint80" },
+    ],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "getRoundPrice",
+    inputs: [{ name: "_roundId", type: "uint256", internalType: "uint256" }],
+    outputs: [{ name: "", type: "int256", internalType: "int256" }],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "owner",
+    inputs: [],
+    outputs: [{ name: "", type: "address", internalType: "address" }],
+    stateMutability: "view",
+  },
+  {
+    type: "function",
+    name: "placeAndSettleBetWithTrue",
+    inputs: [
+      {
+        name: "_direction",
+        type: "uint8",
+        internalType: "enum BetreaConst.BetDirection",
+      },
+    ],
+    outputs: [],
+    stateMutability: "payable",
+  },
+  {
+    type: "function",
+    name: "placeBet",
+    inputs: [
+      {
+        name: "_direction",
+        type: "uint8",
+        internalType: "enum BetreaConst.BetDirection",
+      },
+    ],
+    outputs: [],
+    stateMutability: "payable",
+  },
+  {
+    type: "function",
+    name: "settleBet",
+    inputs: [{ name: "_betId", type: "uint256", internalType: "uint256" }],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "function",
+    name: "withdraw",
+    inputs: [],
+    outputs: [],
+    stateMutability: "nonpayable",
+  },
+  {
+    type: "event",
+    name: "BetPlaced",
+    inputs: [
+      {
+        name: "betId",
+        type: "uint256",
+        indexed: true,
+        internalType: "uint256",
+      },
+      {
+        name: "player",
+        type: "address",
+        indexed: true,
+        internalType: "address",
+      },
+      {
+        name: "direction",
+        type: "uint8",
+        indexed: false,
+        internalType: "enum BetreaConst.BetDirection",
+      },
+      {
+        name: "amount",
+        type: "uint256",
+        indexed: false,
+        internalType: "uint256",
+      },
+      {
+        name: "targetPrice",
+        type: "uint256",
+        indexed: false,
+        internalType: "uint256",
+      },
+      {
+        name: "roundId",
+        type: "uint80",
+        indexed: false,
+        internalType: "uint80",
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: "event",
+    name: "BetSettled",
+    inputs: [
+      {
+        name: "betId",
+        type: "uint256",
+        indexed: true,
+        internalType: "uint256",
+      },
+      {
+        name: "player",
+        type: "address",
+        indexed: true,
+        internalType: "address",
+      },
+      {
+        name: "won",
+        type: "bool",
+        indexed: false,
+        internalType: "bool",
+      },
+      {
+        name: "payout",
+        type: "uint256",
+        indexed: false,
+        internalType: "uint256",
+      },
+    ],
+    anonymous: false,
+  },
+];

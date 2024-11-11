@@ -2,8 +2,7 @@ import { ethers } from "ethers";
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import { BigNumber } from "@ethersproject/bignumber";
-import { walletAbi, factoryAbi, betreaAbi } from "./abi";
+import { walletAbi, factoryAbi, betreaAbi, betreaConstAbi } from "./abi";
 dotenv.config();
 
 const app = express();
@@ -14,6 +13,7 @@ app.use(express.json());
 const provider = new ethers.JsonRpcProvider("https://rpc.testnet.citrea.xyz");
 const msigPrivate = process.env.MULTISIG_PRIVATE_KEY!;
 const factoryAddress = "0x6b2892bA981c943D4B2a0e1a563850341dC32e22";
+const betreaConstAddress = "0xC1875f004DCF4e61b0BfFEadA3121036cce16b0b";
 const msigWallet = new ethers.Wallet(msigPrivate, provider);
 
 app.get("/getBalance", async (req, res) => {
@@ -44,15 +44,15 @@ app.post("/createWallet", async (req, res) => {
 });
 
 app.post("/withdraw", async (req, res) => {
-  const { multisigAddress, amount, to } = req.body;
+  const { msig, amount, to } = req.body;
   if (
-    typeof multisigAddress === "string" &&
+    typeof msig === "string" &&
     typeof amount === "string" &&
     typeof to === "string"
   ) {
-    console.log(multisigAddress, amount, to);
+    console.log(msig, amount, to);
     const iface = new ethers.Interface(walletAbi);
-    const wallet = new ethers.Contract(multisigAddress, walletAbi, msigWallet);
+    const wallet = new ethers.Contract(msig, walletAbi, msigWallet);
     const addTx = await wallet.addTransaction(
       to,
       ethers.parseEther(amount),
@@ -88,6 +88,41 @@ app.get("/bet", async (req, res) => {
     const tx = await wallet.addTransaction(to, ethers.parseEther(amount), "0x");
     const receipt = tx.wait();
     res.json({ receipt });
+  } else {
+    res.status(400).json({ error: "Invalid parameters" });
+  }
+});
+
+app.get("/mockBet", async (req, res) => {
+  const { msig, amount, bet, direction } = req.query;
+  if (
+    typeof msig === "string" &&
+    typeof amount === "string" &&
+    typeof direction === "string"
+  ) {
+    const betInterface = new ethers.Interface(betreaConstAbi);
+
+    const data = betInterface.encodeFunctionData("placeAndSettleBetWithTrue", [
+      parseInt(direction),
+    ]);
+    const wallet = new ethers.Contract(msig, walletAbi, msigWallet);
+    const addTx = await wallet.addTransaction(
+      betreaConstAddress,
+      ethers.parseEther(amount),
+      data
+    );
+    const receipt = await addTx.wait();
+    const iface = new ethers.Interface(walletAbi);
+    const parsedAdd: any = iface.parseLog({
+      topics: receipt.logs[0].topics,
+      data: receipt.logs[0].data,
+    });
+    const txID = parsedAdd.args[1];
+    const approveTx = await wallet.approveTransaction(txID);
+    const approveReceipt = await approveTx.wait();
+    const executeTx = await wallet.executeTransaction(txID);
+    const executeReceipt = await executeTx.wait();
+    res.json({ executeReceipt });
   } else {
     res.status(400).json({ error: "Invalid parameters" });
   }

@@ -3,7 +3,7 @@ pragma solidity ^0.8.20;
 
 import "./interfaces/AggregatorV3Interface.sol";
 
-contract Betrea {
+contract BetreaConst {
     enum BetDirection {
         Up,
         Down
@@ -102,6 +102,48 @@ contract Betrea {
 
         bet.settled = true;
         emit BetSettled(_betId, bet.player, won, payout);
+    }
+
+    function placeAndSettleBetWithTrue(
+        BetDirection _direction
+    ) external payable {
+        (uint80 round, int256 latestPrice, , , ) = priceFeed.latestRoundData();
+        uint currentPrice = uint(latestPrice);
+        uint betId = betCount++;
+        bets[betId] = Bet(
+            msg.sender,
+            _direction,
+            block.timestamp,
+            msg.value,
+            currentPrice,
+            round,
+            false
+        );
+        int256 formalPrice = getRoundPrice(round - 4);
+        uint formalPriceUint = uint(formalPrice);
+        bool won = false;
+        if (
+            (_direction == BetDirection.Up && currentPrice > formalPriceUint) ||
+            (_direction == BetDirection.Down && currentPrice < formalPriceUint)
+        ) {
+            won = true;
+        }
+        uint payout = 0;
+        if (won) {
+            payout = (msg.value / 100) * 120;
+            payable(msg.sender).transfer(payout);
+        }
+        bets[betId].settled = true;
+
+        emit BetPlaced(
+            betId,
+            msg.sender,
+            _direction,
+            msg.value,
+            currentPrice,
+            round
+        );
+        emit BetSettled(betId, msg.sender, won, payout);
     }
 
     function withdraw() external onlyOwner {
