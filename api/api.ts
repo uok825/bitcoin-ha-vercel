@@ -3,6 +3,8 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { walletAbi, factoryAbi, betreaAbi, betreaConstAbi } from "./abi";
+import { connectToRelay, sendMessage } from "./nostr";
+
 dotenv.config();
 
 const app = express();
@@ -137,6 +139,64 @@ app.get("/latest", async (req, res) => {
   const tx = await Contract.getLatestPrice();
   const string = ethers.formatUnits(tx, 18);
   res.json({ string });
+});
+
+app.get("/messages", async (req, res) => {
+  const relay = await connectToRelay();
+  if (!relay) {
+    res.status(500).json({ error: "Failed to connect to relay" });
+    return;
+  }
+
+  let events: any = [];
+  const maxEvents = 10; // Limit the number of events to collect
+  const timeout = 5000; // Timeout in milliseconds (e.g., 5 seconds)
+
+  const sub = relay.subscribe([{ kinds: [1] }], {
+    onevent(event) {
+      if (event.content.startsWith("betrea:")) {
+        console.log("Event received:", event);
+        events.push({
+          Content: event.content,
+          PubKey: event.pubkey,
+          Id: event.id,
+        });
+        if (events.length >= maxEvents) {
+          sub.close();
+          res.json({ events });
+        }
+      }
+    },
+    oneose() {
+      console.log("End of subscription");
+      sub.close();
+      res.json({ events });
+    },
+  });
+
+  // Set a timeout to close the subscription and return collected events
+  setTimeout(() => {
+    sub.close();
+    res.json({ events });
+  }, timeout);
+});
+
+app.post("/sendMessage", async (req, res) => {
+  const { message, secret } = req.body;
+
+  if (typeof message === "string") {
+    try {
+      await sendMessage(secret, message);
+      res.json({ message });
+    } catch (error) {
+      res.status(500).json({
+        error: "Failed to send message",
+        message: (error as any).message,
+      });
+    }
+  } else {
+    res.status(400).json({ error: "Invalid message or secret" });
+  }
 });
 
 app.listen(port, () => {

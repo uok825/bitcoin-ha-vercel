@@ -1,6 +1,5 @@
 import axios from "axios";
 import { PriceServiceConnection } from "@pythnetwork/price-service-client";
-import { ethers } from "ethers";
 
 const url = "/api";
 const connection = new PriceServiceConnection("https://hermes.pyth.network");
