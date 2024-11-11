@@ -1,0 +1,35 @@
+.container {
+    border: 1px solid red;
+    display: flex;
+}
+
+.logo_container {
+    border: 1px solid orange;
+    flex: 1;
+}
+
+.logo_inner_container {
+    padding: 12px 24px;
+}
+
+.logo {
+    width: 125px;
+    display: block;
+}
+
+.cashier_container {
+    flex: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cashier_inner_container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.connect_container {
+    flex: 1;
+}
