@@ -18,7 +18,7 @@ const factoryAddress = "0x6b2892bA981c943D4B2a0e1a563850341dC32e22";
 const betreaConstAddress = "0xC1875f004DCF4e61b0BfFEadA3121036cce16b0b";
 const msigWallet = new ethers.Wallet(msigPrivate, provider);
 
-app.get("/getBalance", async (req, res) => {
+app.get("/api/getBalance", async (req, res) => {
   const { address } = req.query;
   if (typeof address === "string") {
     const balance = await provider.getBalance(address);
@@ -28,7 +28,7 @@ app.get("/getBalance", async (req, res) => {
   }
 });
 
-app.post("/createWallet", async (req, res) => {
+app.post("/api/createWallet", async (req, res) => {
   const { owner } = req.body;
   if (typeof owner === "string") {
     const factory = new ethers.Contract(factoryAddress, factoryAbi, msigWallet);
@@ -45,7 +45,7 @@ app.post("/createWallet", async (req, res) => {
   }
 });
 
-app.post("/withdraw", async (req, res) => {
+app.post("/api/withdraw", async (req, res) => {
   const { msig, amount, to } = req.body;
   if (
     typeof msig === "string" &&
@@ -78,7 +78,7 @@ app.post("/withdraw", async (req, res) => {
   }
 });
 
-app.get("/bet", async (req, res) => {
+app.get("/api/bet", async (req, res) => {
   const { msig, amount, bet, to } = req.query;
   if (
     typeof msig === "string" &&
@@ -95,7 +95,7 @@ app.get("/bet", async (req, res) => {
   }
 });
 
-app.get("/mockBet", async (req, res) => {
+app.get("/api/mockBet", async (req, res) => {
   const { msig, amount, bet, direction } = req.query;
   if (
     typeof msig === "string" &&
@@ -130,7 +130,7 @@ app.get("/mockBet", async (req, res) => {
   }
 });
 
-app.get("/latest", async (req, res) => {
+app.get("/api/latest", async (req, res) => {
   const Contract = new ethers.Contract(
     "0x4AB36F66ca1867F3A47bC486514025Ef8d9Dc3A3",
     betreaAbi,
@@ -141,7 +141,7 @@ app.get("/latest", async (req, res) => {
   res.json({ string });
 });
 
-app.get("/messages", async (req, res) => {
+app.get("/api/messages", async (req, res) => {
   const relay = await connectToRelay();
   if (!relay) {
     res.status(500).json({ error: "Failed to connect to relay" });
@@ -153,7 +153,7 @@ app.get("/messages", async (req, res) => {
   const timeout = 5000; // Timeout in milliseconds (e.g., 5 seconds)
 
   const sub = relay.subscribe([{ kinds: [1] }], {
-    onevent(event) {
+    onevent(event: any) {
       if (event.content.startsWith("betrea:")) {
         console.log("Event received:", event);
         events.push({
@@ -181,7 +181,7 @@ app.get("/messages", async (req, res) => {
   }, timeout);
 });
 
-app.post("/sendMessage", async (req, res) => {
+app.post("/api/sendMessage", async (req, res) => {
   const { message, secret } = req.body;
 
   if (typeof message === "string") {

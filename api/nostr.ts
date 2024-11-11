@@ -1,7 +1,8 @@
-import { finalizeEvent, getPublicKey } from "nostr-tools";
-import { Relay } from "nostr-tools";
+const { Relay, useWebSocketImplementation } = require("nostr-tools/relay");
+const { finalizeEvent } = require("nostr-tools");
 import WebSocket from "ws";
 
+useWebSocketImplementation(WebSocket);
 const relayUrl = "wss://nostr.utkuomer.xyz";
 const maxRetries = 5;
 let retryCount = 0;
@@ -58,10 +59,9 @@ export async function sendMessage(privateKey: Uint8Array, message: string) {
 
 // Subscribe function with callback for new messages
 export async function subscribeToMessages(
-  relay: Relay | null,
   onMessageReceived: (event: any) => void
 ) {
-  //const relay = await connectToRelay();
+  const relay = await connectToRelay();
 
   if (!relay) {
     console.error("Failed to connect to relay for subscribing.");
@@ -69,7 +69,7 @@ export async function subscribeToMessages(
   }
 
   const sub = relay.subscribe([{ kinds: [1] }], {
-    onevent(event) {
+    onevent(event: any) {
       if (event.content.startsWith("betrea:")) {
         console.log("Filtered event received:", event);
         onMessageReceived(event); // Pass message to the callback
@@ -83,8 +83,7 @@ export async function subscribeToMessages(
 }
 
 async function test() {
-  const relay = await connectToRelay();
-  subscribeToMessages(relay, (event) => {
+  subscribeToMessages((event) => {
     console.log("Received message:", event);
   });
 }
