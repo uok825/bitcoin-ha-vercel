@@ -1,7 +1,7 @@
 import axios from "axios";
 import { PriceServiceConnection } from "@pythnetwork/price-service-client";
 
-const url = "/api";
+const url = "https://bitrea-api.vercel.app/api";
 const connection = new PriceServiceConnection("https://hermes.pyth.network");
 const priceIds = [
   "0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43", // BTC/USD price id
@@ -76,4 +76,31 @@ async function getPrices() {
   return { btc: bitcoinPrice, eth: etherPrice };
 }
 
-export { createAccount, withdraw, bet, mockBet, getPrices };
+async function getMessages() {
+  const messages = await axios.get(url + "/messages");
+  return messages.data;
+}
+
+async function sendMessage(message, secret) {
+  axios
+    .post(url + "/sendMessage", {
+      message: message,
+      secret: secret,
+    })
+    .then((response) => {
+      console.log("Response:", response.data);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
+
+export {
+  createAccount,
+  withdraw,
+  bet,
+  mockBet,
+  getPrices,
+  getMessages,
+  sendMessage,
+};
