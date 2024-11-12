@@ -11,7 +11,7 @@ import SVG from "./assets/sanat.svg";
 import PaymentModal from "./components/ui/PaymentModal";
 
 function App() {
-  const [paymentModalIsOpen, setIsPaymentOpen] = useState(true);
+  const [paymentModalIsOpen, setIsPaymentOpen] = useState(false);
   const account = useAccount();
 
   useEffect(() => {

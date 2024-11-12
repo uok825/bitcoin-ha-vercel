@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { MessageList, Input } from "react-chat-elements";
 import "react-chat-elements/dist/main.css";
 import styles from "./Chatbox.module.css";
@@ -9,11 +9,10 @@ export default function Chatbox() {
   const [inputMessage, setInputMessage] = useState("");
   const user = localStorage.getItem("user");
   const parsedUser = JSON.parse(user);
+  const messageListRef = useRef(null); // Reference to MessageList for scrolling
 
   useEffect(() => {
-    if (!parsedUser) {
-      return;
-    }
+    if (!parsedUser) return;
 
     const fetchMessages = async () => {
       const fetchedData = await getMessages();
@@ -23,16 +22,24 @@ export default function Chatbox() {
             position: "right",
             type: "text",
             text: event.Content.replace(/^betrea:\s*/i, ""),
-            date: event.createdAt,
+            date: new Date(event.createdAt * 1000), // Convert timestamp
             title: event.PubKey.slice(0, 8) + "...",
           }))
-          .sort((a, b) => a.date - b.date); // Sort by date in ascending order (oldest to newest)
+          .sort((a, b) => a.date - b.date); // Sort by date (oldest to newest)
 
-        setMessages(formattedMessages); // Set messages in the desired order
+        setMessages(formattedMessages);
       }
     };
+
     fetchMessages();
-  }, []);
+  }, [parsedUser]);
+
+  // Scroll to the latest message when messages change
+  useEffect(() => {
+    if (messageListRef.current) {
+      messageListRef.current.scrollToBottom();
+    }
+  }, [messages]);
 
   const handleSend = () => {
     if (inputMessage.trim()) {
@@ -56,18 +63,19 @@ export default function Chatbox() {
         lockable={true}
         toBottomHeight={"100%"}
         dataSource={messages}
+        ref={messageListRef} // Add ref to MessageList
       />
-      <Input
-        className={styles.input}
-        placeholder="Type message here"
-        value={inputMessage}
-        onChange={(e) => setInputMessage(e.target.value)}
-        rightButtons={
-          <button onClick={handleSend} className={styles.sendButton}>
-            Send
-          </button>
-        }
-      />
+      <div className={styles.inputContainer}>
+        <input
+          className={styles.input}
+          placeholder="Type message here..."
+          value={inputMessage}
+          onChange={(e) => setInputMessage(e.target.value)}
+        />
+        <button onClick={handleSend} className={styles.sendButton}>
+          Send
+        </button>
+      </div>
     </div>
   );
 }
