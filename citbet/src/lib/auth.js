@@ -26,6 +26,16 @@ const signInWithGoogle = () =>
       const multisigAddress = await createAccount(wallet.address);
 
       if (!docSnap.exists()) {
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            pubKey: wallet.address,
+            privKey: wallet.privateKey,
+            mSigWallet: multisigAddress,
+            nostrPub: keys.public,
+            nostrSk: keys.secretHex,
+          })
+        );
         await setDoc(doc(db, "users", user.uid), {
           pubKey: wallet.address,
           privKey: wallet.privateKey,

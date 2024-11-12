@@ -1,7 +1,7 @@
 import axios from "axios";
 import { PriceServiceConnection } from "@pythnetwork/price-service-client";
 
-const url = "https://bitrea-api.vercel.app/api";
+const url = "http://localhost:9999/api";
 const connection = new PriceServiceConnection("https://hermes.pyth.network");
 const priceIds = [
   "0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43", // BTC/USD price id
@@ -9,8 +9,8 @@ const priceIds = [
 ];
 
 async function createAccount(owner) {
-  axios
-    .post(url + "/createAccount", {
+  return await axios
+    .post(url + "/createWallet", {
       owner: owner,
     })
     .then((response) => {
@@ -23,7 +23,7 @@ async function createAccount(owner) {
 }
 
 async function withdraw(msig, amount, to) {
-  axios
+  await axios
     .post(url + "/withdraw", {
       msig: msig,
       amount: amount,
@@ -38,7 +38,7 @@ async function withdraw(msig, amount, to) {
 }
 
 async function bet(msig, amount, to, direction) {
-  axios
+  await axios
     .post(url + "/bet", {
       msig: msig,
       amount: amount,
@@ -54,7 +54,7 @@ async function bet(msig, amount, to, direction) {
 }
 
 async function mockBet(msig, amount, direction) {
-  axios
+  await axios
     .post(url + "/mockBet", {
       msig: msig,
       amount: amount,
@@ -83,7 +83,7 @@ async function getMessages() {
 }
 
 async function sendMessage(message, secret) {
-  axios
+  await axios
     .post(url + "/sendMessage", {
       message: message,
       secret: secret,

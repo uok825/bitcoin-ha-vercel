@@ -19,10 +19,8 @@ const getUser = async (address) => {
   }
 
   const userRef = collection(db, "users");
-  const q = query(userRef, where("pubKey", "==", address));
-
+  const q = await query(userRef, where("pubKey", "==", address));
   const querySnapshot = await getDocs(q);
-
   console.log("çalıştı");
 
   let temp = undefined;
@@ -31,19 +29,28 @@ const getUser = async (address) => {
     temp = doc.data();
   });
 
-  const multisigAddress = await createAccount(address);
-  const keys = await genSecret();
-
   if (!temp) {
+    const multisigAddress = await createAccount(address);
+    const keys = await genSecret();
     await setDoc(doc(db, "users", uuidv4()), {
       pubKey: address,
       privKey: null,
-      mSigWallet: multisigAddress.wallet,
+      mSigWallet: multisigAddress,
       nostrPub: keys.public,
       nostrSk: keys.secretHex,
     });
+    localStorage.setItem(
+      "user",
+      JSON.stringify({
+        pubKey: address,
+        privKey: null,
+        mSigWallet: multisigAddress,
+        nostrPub: keys.public,
+        nostrSk: keys.secretHex,
+      })
+    );
   }
-
+  localStorage.setItem("user", JSON.stringify(temp));
   return temp;
 };
 
