@@ -15,7 +15,7 @@ import PaymentModal from "./components/ui/PaymentModal";
 import TextTransition, { presets } from "react-text-transition";
 import { mockBet } from "./utils/fetchFunctions";
 
-const TEXTS = ["88,746.74", "88,746.74", "87,577,54", "88,265.54"];
+const TEXTS = ["88,746.74", "88,655.21", "87,980,54", "88,265.54"];
 
 function App() {
   const user = localStorage.getItem("user");

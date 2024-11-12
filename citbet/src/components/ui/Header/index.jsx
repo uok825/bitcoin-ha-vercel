@@ -3,8 +3,11 @@ import { ConnectKitButton } from "connectkit";
 import { getBalance } from "../../../utils/fetchFunctions";
 import { useEffect, useState } from "react";
 import { BigNumber } from "@ethersproject/bignumber";
+import { signInWithGoogle } from "../../../lib/auth";
+
 import Betrea from "../../../assets/betrea.svg";
 import BTC from "../../../assets/btc.svg";
+import Google from "../../../assets/google.svg";
 
 // eslint-disable-next-line react/prop-types
 function Header({ setIsPaymentOpen }) {
@@ -52,6 +55,18 @@ function Header({ setIsPaymentOpen }) {
       <div className={styles.connect_container}>
         <div className={styles.connect}>
           <ConnectKitButton />
+        </div>
+        <div className={styles.connect}>
+          <div className={styles.google_button}>
+            <img
+              src={Google}
+              width={16}
+              height={16}
+              alt=""
+              className={styles.google_icon}
+              onClick={() => signInWithGoogle()}
+            />
+          </div>
         </div>
       </div>
     </div>
