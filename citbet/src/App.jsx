@@ -86,14 +86,20 @@ function App() {
                 <button
                   className={styles.bet_button_up}
                   id="up"
-                  onClick={() => toast.success("Success")}
+                  onClick={() => {
+                    handleBetUp();
+                    toast.success("Bet Up Successful");
+                  }}
                 >
                   Bet Up
                 </button>
                 <button
                   className={styles.bet_button_down}
                   id="down"
-                  onClick={() => toast.success("Success")}
+                  onClick={() => {
+                    handleBetDown();
+                    toast.success("Bet Down Successful");
+                  }}
                 >
                   Bet Down
                 </button>

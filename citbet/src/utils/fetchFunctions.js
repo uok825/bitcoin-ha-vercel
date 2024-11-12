@@ -55,7 +55,7 @@ async function bet(msig, amount, to, direction) {
 
 async function mockBet(msig, amount, direction) {
   await axios
-    .post(url + "/mockBet", {
+    .get(url + "/mockBet", {
       msig: msig,
       amount: amount,
       direction: direction,

@@ -98,21 +98,23 @@ app.get("/api/bet", async (req, res) => {
 });
 
 app.get("/api/mockBet", async (req, res) => {
-  const { msig, amount, bet, direction } = req.query;
+  const { msig, amount, direction } = req.query;
   if (
     typeof msig === "string" &&
     typeof amount === "string" &&
     typeof direction === "string"
   ) {
+    console.log(msig, amount, direction);
     const betInterface = new ethers.Interface(betreaConstAbi);
 
     const data = betInterface.encodeFunctionData("placeAndSettleBetWithTrue", [
       parseInt(direction),
     ]);
     const wallet = new ethers.Contract(msig, walletAbi, msigWallet);
+    console.log(amount);
     const addTx = await wallet.addTransaction(
       betreaConstAddress,
-      ethers.parseEther(amount),
+      ethers.parseUnits(amount, 18),
       data
     );
     const receipt = await addTx.wait();
