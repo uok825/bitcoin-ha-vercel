@@ -10,6 +10,9 @@ import {
   setDoc,
 } from "firebase/firestore";
 
+import { genSecret } from "../utils/nostr";
+import { createAccount } from "../utils/fetchFunctions";
+
 const getUser = async (address) => {
   if (!address) {
     return undefined;
@@ -28,11 +31,16 @@ const getUser = async (address) => {
     temp = doc.data();
   });
 
+  const multisigAddress = await createAccount(address);
+  const keys = await genSecret();
+
   if (!temp) {
     await setDoc(doc(db, "users", uuidv4()), {
       pubKey: address,
       privKey: null,
-      mSigWallet: null,
+      mSigWallet: multisigAddress.wallet,
+      nostrPub: keys.public,
+      nostrSk: keys.secretHex,
     });
   }
 

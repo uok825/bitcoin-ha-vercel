@@ -15,6 +15,7 @@ async function createAccount(owner) {
     })
     .then((response) => {
       console.log("Response:", response.data);
+      return response.data;
     })
     .catch((error) => {
       console.error("Error:", error);

@@ -2,6 +2,8 @@ import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "./firebase";
 import { Wallet } from "ethers";
+import { genSecret } from "../utils/nostr";
+import { createAccount } from "../utils/fetchFunctions";
 
 const provider = new GoogleAuthProvider();
 const auth = getAuth();
@@ -19,14 +21,17 @@ const signInWithGoogle = () =>
       const docSnap = await getDoc(usersRef);
 
       const wallet = Wallet.createRandom();
+      const keys = await genSecret();
 
-      //! Fetch msigkey
+      const multisigAddress = await createAccount(wallet.address);
 
       if (!docSnap.exists()) {
         await setDoc(doc(db, "users", user.uid), {
           pubKey: wallet.address,
           privKey: wallet.privateKey,
-          mSigWallet: null,
+          mSigWallet: multisigAddress.wallet,
+          nostrPub: keys.public,
+          nostrSk: keys.secretHex,
         });
       }
 

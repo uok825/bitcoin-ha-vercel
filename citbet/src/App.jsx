@@ -5,7 +5,7 @@ import { useAccount } from "wagmi";
 
 import { getUser } from "./lib/storage";
 
-import { Header, Sidebar } from "./components";
+import { Chatbox, Header, Sidebar } from "./components";
 
 import SVG from "./assets/sanat.svg";
 import PaymentModal from "./components/ui/PaymentModal";
@@ -31,6 +31,7 @@ function App() {
         />
         <img src={SVG} alt="" className={styles.sanat} />
         <Sidebar />
+        <Chatbox />
       </div>
       {/* <p onClick={() => signInWithGoogle()}>selam</p>
       <p onClick={() => console.log(auth?.currentUser)}>auth</p>
