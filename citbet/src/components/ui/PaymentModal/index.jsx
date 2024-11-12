@@ -21,14 +21,33 @@ ReactModal.setAppElement("#root");
 
 function PaymentModal({ modalIsOpen, setIsOpen }) {
   const [isWithdraw, setIsWithdraw] = useState(false);
+  const [isPending, setIsPending] = useState(false); // New state for pending status
+  const [isSuccess, setIsSuccess] = useState(false);
   const user = localStorage.getItem("user");
   const parsedUser = JSON.parse(user);
   const textAreaRef = useRef(null);
+  const amountRef = useRef(null);
+  const addressRef = useRef(null);
 
   const withdrawBitcoin = async () => {
-    const amount = document.querySelector(".input").value;
-    const address = document.querySelector(".input").value;
-    await withdraw(parsedUser.mSigWallet, amount, address);
+    const amount = amountRef.current.value;
+    const address = addressRef.current.value;
+
+    // Set pending status to true when withdrawal starts
+    setIsPending(true);
+
+    try {
+      const bool = await withdraw(parsedUser.mSigWallet, amount, address);
+      if (bool) {
+        console.log("Withdrawal successful");
+        setIsSuccess(true);
+      }
+    } catch (error) {
+      console.error("Withdrawal failed:", error);
+    } finally {
+      // Set pending status to false after withdrawal completes
+      setIsPending(false);
+    }
   };
 
   function closeModal() {
@@ -101,6 +120,7 @@ function PaymentModal({ modalIsOpen, setIsOpen }) {
                         type="text"
                         placeholder="Amount"
                         className={styles.input}
+                        ref={amountRef}
                       />
                     </div>
                     <h5 className={styles.input_desc}>Your wallet address</h5>
@@ -108,12 +128,19 @@ function PaymentModal({ modalIsOpen, setIsOpen }) {
                       type="text"
                       placeholder="Address"
                       className={styles.input}
+                      ref={addressRef}
                     />
                     <button
                       className={styles.withdraw_button}
                       onClick={withdrawBitcoin}
+                      disabled={isPending} // Disable button while pending
                     >
-                      Withdraw
+                      {isPending
+                        ? "Pending..."
+                        : isSuccess
+                        ? "Withdrawed"
+                        : "Withdraw"}{" "}
+                      {/* Show "Pending" text */}
                     </button>
                   </div>
                 )}
