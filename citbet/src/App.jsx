@@ -81,10 +81,18 @@ function App() {
                 />
               </div>
               <div className={styles.bet_buttons_container}>
-                <button className={styles.bet_button_up} id="up">
+                <button
+                  className={styles.bet_button_up}
+                  id="up"
+                  onClick={() => handleBetUp()}
+                >
                   Bet Up
                 </button>
-                <button className={styles.bet_button_down} id="down">
+                <button
+                  className={styles.bet_button_down}
+                  id="down"
+                  onClick={() => handleBetDown()}
+                >
                   Bet Down
                 </button>
               </div>
