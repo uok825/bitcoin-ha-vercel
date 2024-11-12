@@ -2,6 +2,7 @@ import styles from "./App.module.css";
 import "./lib/firebase";
 import { useEffect, useState, useRef } from "react";
 import { useAccount } from "wagmi";
+import toast, { Toaster } from "react-hot-toast";
 
 import { getUser } from "./lib/storage";
 
@@ -52,6 +53,7 @@ function App() {
 
   return (
     <div>
+      <Toaster />
       <Header setIsPaymentOpen={setIsPaymentOpen} />
       <div className={styles.container} id="container">
         <PaymentModal
@@ -81,10 +83,18 @@ function App() {
                 />
               </div>
               <div className={styles.bet_buttons_container}>
-                <button className={styles.bet_button_up} id="up">
+                <button
+                  className={styles.bet_button_up}
+                  id="up"
+                  onClick={() => toast.success("Success")}
+                >
                   Bet Up
                 </button>
-                <button className={styles.bet_button_down} id="down">
+                <button
+                  className={styles.bet_button_down}
+                  id="down"
+                  onClick={() => toast.success("Success")}
+                >
                   Bet Down
                 </button>
               </div>
