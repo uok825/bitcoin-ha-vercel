@@ -7,19 +7,28 @@ import { getMessages, sendMessage } from "../../../utils/fetchFunctions";
 export default function Chatbox() {
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
+  const user = localStorage.getItem("user");
+  const parsedUser = JSON.parse(user);
 
   useEffect(() => {
+    if (!parsedUser) {
+      return;
+    }
+
     const fetchMessages = async () => {
       const fetchedData = await getMessages();
       if (fetchedData && fetchedData.events) {
-        const formattedMessages = fetchedData.events.map((event) => ({
-          position: "right",
-          type: "text",
-          text: event.Content.replace(/^betrea:\s*/i, ""),
-          date: new Date(),
-          title: event.PubKey.slice(0, 8) + "...",
-        }));
-        setMessages(formattedMessages);
+        const formattedMessages = fetchedData.events
+          .map((event) => ({
+            position: "right",
+            type: "text",
+            text: event.Content.replace(/^betrea:\s*/i, ""),
+            date: event.createdAt,
+            title: event.PubKey.slice(0, 8) + "...",
+          }))
+          .sort((a, b) => a.date - b.date); // Sort by date in ascending order (oldest to newest)
+
+        setMessages(formattedMessages); // Set messages in the desired order
       }
     };
     fetchMessages();
@@ -32,9 +41,10 @@ export default function Chatbox() {
         type: "text",
         text: inputMessage,
         date: new Date(),
-        title: "You",
+        title: parsedUser.nostrPub.slice(0, 8) + "...",
       };
       setMessages((prevMessages) => [...prevMessages, newMessage]);
+      sendMessage(inputMessage, parsedUser.nostrSk);
       setInputMessage("");
     }
   };

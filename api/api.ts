@@ -34,12 +34,14 @@ app.post("/api/createWallet", async (req, res) => {
     const factory = new ethers.Contract(factoryAddress, factoryAbi, msigWallet);
     const wallet = await factory.createWallet([owner, msigWallet.address]);
     const walletTx = await wallet.wait();
+    console.log(walletTx);
     const decoder = new ethers.Interface(factoryAbi);
     const decoded: any = decoder.parseLog({
       topics: walletTx.logs[0].topics,
       data: walletTx.logs[0].data,
     });
-    res.json({ wallet: decoded[0].args[1] });
+    console.log(decoded);
+    res.json(decoded.args[1]);
   } else {
     res.status(400).json({ error: "Invalid parameters" });
   }
@@ -151,33 +153,51 @@ app.get("/api/messages", async (req, res) => {
   let events: any = [];
   const maxEvents = 10; // Limit the number of events to collect
   const timeout = 5000; // Timeout in milliseconds (e.g., 5 seconds)
+  let responseSent = false; // Flag to track if the response has been sent
 
   const sub = relay.subscribe([{ kinds: [1] }], {
     onevent(event: any) {
-      if (event.content.startsWith("betrea:")) {
+      if (event.content.startsWith("betrea:") && !responseSent) {
         console.log("Event received:", event);
         events.push({
           Content: event.content,
           PubKey: event.pubkey,
           Id: event.id,
+          createdAt: event.created_at,
         });
         if (events.length >= maxEvents) {
+          responseSent = true; // Set the flag to prevent further responses
           sub.close();
+
+          // Sort events by createdAt in descending order before sending the response
+          events.sort((a: any, b: any) => b.createdAt - a.createdAt);
           res.json({ events });
         }
       }
     },
     oneose() {
-      console.log("End of subscription");
-      sub.close();
-      res.json({ events });
+      if (!responseSent) {
+        console.log("End of subscription");
+        responseSent = true; // Set the flag to prevent further responses
+        sub.close();
+
+        // Sort events by createdAt in descending order before sending the response
+        events.sort((a: any, b: any) => b.createdAt - a.createdAt);
+        res.json({ events });
+      }
     },
   });
 
-  // Set a timeout to close the subscription and return collected events
+  // Set a timeout to close the subscription and return collected events if maxEvents is not reached
   setTimeout(() => {
-    sub.close();
-    res.json({ events });
+    if (!responseSent) {
+      responseSent = true; // Set the flag to prevent further responses
+      sub.close();
+
+      // Sort events by createdAt in descending order before sending the response
+      events.sort((a: any, b: any) => a.createdAt - b.createdAt);
+      res.json({ events });
+    }
   }, timeout);
 });
 
