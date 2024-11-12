@@ -96,6 +96,16 @@ async function sendMessage(message, secret) {
     });
 }
 
+async function getBalance(msig) {
+  const balance = await axios.post("https://rpc.testnet.citrea.xyz", {
+    method: "eth_getBalance",
+    params: [msig, "latest"],
+    id: 1,
+    jsonrpc: "2.0",
+  });
+  return balance.data;
+}
+
 export {
   createAccount,
   withdraw,
@@ -104,4 +114,5 @@ export {
   getPrices,
   getMessages,
   sendMessage,
+  getBalance,
 };
