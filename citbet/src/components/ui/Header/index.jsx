@@ -4,7 +4,8 @@ import { ConnectKitButton } from "connectkit";
 import Betrea from "../../../assets/betrea.svg";
 import BTC from "../../../assets/btc.svg";
 
-function Header() {
+// eslint-disable-next-line react/prop-types
+function Header({ setIsPaymentOpen }) {
   return (
     <div className={styles.container}>
       <div className={styles.logo_container}>
@@ -22,7 +23,10 @@ function Header() {
               <p className={styles.balance_text}>0,001</p>
             </div>
           </div>
-          <div className={styles.cashier_button_container}>
+          <div
+            className={styles.cashier_button_container}
+            onClick={() => setIsPaymentOpen(true)}
+          >
             <h1 className={styles.cashier_text}>Cashier</h1>
           </div>
         </div>

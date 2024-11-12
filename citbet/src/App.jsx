@@ -1,6 +1,6 @@
 import styles from "./App.module.css";
 import "./lib/firebase";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 
 import { getUser } from "./lib/storage";
@@ -8,8 +8,10 @@ import { getUser } from "./lib/storage";
 import { Header, Sidebar } from "./components";
 
 import SVG from "./assets/sanat.svg";
+import PaymentModal from "./components/ui/PaymentModal";
 
 function App() {
+  const [paymentModalIsOpen, setIsPaymentOpen] = useState(true);
   const account = useAccount();
 
   useEffect(() => {
@@ -21,8 +23,12 @@ function App() {
 
   return (
     <div>
-      <Header />
-      <div className={styles.container}>
+      <Header setIsPaymentOpen={setIsPaymentOpen} />
+      <div className={styles.container} id="container">
+        <PaymentModal
+          modalIsOpen={paymentModalIsOpen}
+          setIsOpen={setIsPaymentOpen}
+        />
         <img src={SVG} alt="" className={styles.sanat} />
         <Sidebar />
       </div>

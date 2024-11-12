@@ -1,5 +1,7 @@
+import styles from "./Chatbox.module.css";
+
 function Chatbox() {
-  return <div>Chatbox</div>;
+  return <div className={styles.container}>Chatbox</div>;
 }
 
 export default Chatbox;
