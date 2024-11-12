@@ -30,8 +30,10 @@ function App() {
           setIsOpen={setIsPaymentOpen}
         />
         <img src={SVG} alt="" className={styles.sanat} />
-        <Sidebar />
-        <Chatbox />
+        <div className={styles.inner_container}>
+          <Sidebar />
+          <Chatbox />
+        </div>
       </div>
       {/* <p onClick={() => signInWithGoogle()}>selam</p>
       <p onClick={() => console.log(auth?.currentUser)}>auth</p>

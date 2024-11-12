@@ -48,6 +48,7 @@ export default function Chatbox() {
         dataSource={messages}
       />
       <Input
+        className={styles.input}
         placeholder="Type message here"
         value={inputMessage}
         onChange={(e) => setInputMessage(e.target.value)}

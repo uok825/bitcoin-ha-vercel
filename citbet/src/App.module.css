@@ -5,6 +5,12 @@
     position: relative;
 }
 
+.inner_container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
 .sanat {
     flex-shrink: 0;
     display: block;
@@ -13,4 +19,8 @@
     left: -5vw;
     top: -12vh;
     /* scale: 0.95; */
+}
+
+.input {
+    background-color: transparent !important;
 }
