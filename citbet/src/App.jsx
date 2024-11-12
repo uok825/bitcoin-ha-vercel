@@ -15,8 +15,12 @@ import TextTransition, { presets } from "react-text-transition";
 const TEXTS = ["88,746.74", "88,746.74", "87,577,54", "88,265.54"];
 
 function App() {
+<<<<<<< HEAD
   const [paymentModalIsOpen, setIsPaymentOpen] = useState(true);
   const [index, setIndex] = useState(0);
+=======
+  const [paymentModalIsOpen, setIsPaymentOpen] = useState(false);
+>>>>>>> a8c8cb4dc4837ce71f9a6ff5a1e721eca04edb49
   const account = useAccount();
 
   useEffect(() => {

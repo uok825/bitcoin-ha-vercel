@@ -1,94 +1,159 @@
 .container {
-    display: flex;
-    -webkit-box-shadow: 0px 4px 15px 0px rgba(112,145,157,0.12);
-    -moz-box-shadow: 0px 4px 15px 0px rgba(112,145,157,0.12);
-    box-shadow: 0px 4px 15px 0px rgba(112,145,157,0.12);
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  box-shadow: 0px 4px 15px 0px rgba(112, 145, 157, 0.08);
+  padding: 8px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .logo_container {
-    flex: 1;
+  flex: 1;
 }
 
 .logo_inner_container {
-    padding: 12px 24px;
+  padding: 12px 24px;
 }
 
 .logo {
-    width: 125px;
-    display: block;
+  width: 125px;
+  height: auto;
+  display: block;
+  transition: opacity 0.2s ease;
+}
+
+.logo:hover {
+  opacity: 0.9;
 }
 
 .cashier_container {
-    flex: 3;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.balance_container {
-    display: flex;
-    align-items: center;
-    gap: 1px;
-}
-
-.balance_image_container {
-    padding: 4px;
-    border-top-left-radius: 4px;
-    border-bottom-left-radius: 4px;
-    background-color: #FAE6DC;
-}
-
-.btc_image {
-    display: block;
-}
-
-.balance_text_container {
-    padding: 7px 8px;
-    height: 32px;
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
-    background-color: #FAE6DC;
-}
-
-.balance_text {
-    font-size: 16px;
-    font-weight: 500;
-    color: #7E3719;
-}
-
-.cashier_button_container {
-    border: 1px solid #FAE6DC;
-    border-radius: 4px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-}
-
-.cashier_button_container:hover {
-    cursor: pointer;
-}
-
-.cashier_text {
-    font-size: 20px;
-    font-weight: 500;
-    color: #7E3719;
-    padding: 0 14px;
+  flex: 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .cashier_inner_container {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.balance_container {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(to right, #fae6dc, #fdf0ea);
+  border-radius: 6px;
+  padding: 2px;
+  transition: transform 0.2s ease;
+}
+
+.balance_container:hover {
+  transform: translateY(-1px);
+}
+
+.balance_image_container {
+  padding: 4px 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btc_image {
+  display: block;
+  width: 24px;
+  height: 24px;
+}
+
+.balance_text_container {
+  padding: 6px 12px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+}
+
+.balance_text {
+  font-size: 16px;
+  font-weight: 600;
+  color: #7e3719;
+  letter-spacing: 0.2px;
+}
+
+.cashier_button_container {
+  display: flex;
+  padding: 6px 12px;
+  height: 32px;
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #fae6dc;
+  border-radius: 6px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.cashier_button_container:hover {
+  border-color: #df612b;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(223, 97, 43, 0.1);
+}
+
+.cashier_image_container {
+  padding: 16px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fae6dc;
+}
+
+.cashier_image {
+  display: block;
+  width: 24px;
+  height: 24px;
+}
+
+.cashier_text_container {
+  padding: 6px 12px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+}
+
+.cashier_text {
+  font-size: 16px;
+  font-weight: 500;
+  color: #7e3719;
 }
 
 .connect_container {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 24px;
 }
 
-.connect {
-    display: inline-block;
-    padding: 0 24px;
+.connect_button {
+  background: #fdf0ea;
+  border: 1px solid #fae6dc;
+  border-radius: 24px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.connect_button:hover {
+  background: #fae6dc;
+  border-color: #df612b;
+  transform: translateY(-1px);
+}
+
+.connect_text {
+  font-size: 14px;
+  font-weight: 500;
+  color: #7e3719;
+  letter-spacing: 0.5px;
 }
