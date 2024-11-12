@@ -1,10 +1,11 @@
 .container {
-    border: 1px solid red;
     display: flex;
+    -webkit-box-shadow: 0px 4px 15px 0px rgba(112,145,157,0.12);
+    -moz-box-shadow: 0px 4px 15px 0px rgba(112,145,157,0.12);
+    box-shadow: 0px 4px 15px 0px rgba(112,145,157,0.12);
 }
 
 .logo_container {
-    border: 1px solid orange;
     flex: 1;
 }
 
@@ -24,12 +25,70 @@
     align-items: center;
 }
 
+.balance_container {
+    display: flex;
+    align-items: center;
+    gap: 1px;
+}
+
+.balance_image_container {
+    padding: 4px;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    background-color: #FAE6DC;
+}
+
+.btc_image {
+    display: block;
+}
+
+.balance_text_container {
+    padding: 7px 8px;
+    height: 32px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    background-color: #FAE6DC;
+}
+
+.balance_text {
+    font-size: 16px;
+    font-weight: 500;
+    color: #7E3719;
+}
+
+.cashier_button_container {
+    border: 1px solid #FAE6DC;
+    border-radius: 4px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+}
+
+.cashier_button_container:hover {
+    cursor: pointer;
+}
+
+.cashier_text {
+    font-size: 20px;
+    font-weight: 500;
+    color: #7E3719;
+    padding: 0 14px;
+}
+
 .cashier_inner_container {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
 }
 
 .connect_container {
     flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.connect {
+    display: inline-block;
+    padding: 0 24px;
 }

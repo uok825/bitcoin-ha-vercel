@@ -43,7 +43,23 @@ export const Web3Provider = ({ children }) => {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <ConnectKitProvider>{children}</ConnectKitProvider>
+        <ConnectKitProvider
+          customTheme={{
+            "--ck-connectbutton-font-size": "15px",
+            "--ck-connectbutton-border-radius": "12px",
+            "--ck-connectbutton-color": "#DF612B",
+            "--ck-connectbutton-background": "rgba(250, 230, 220, 1)",
+            "--ck-connectbutton-box-shadow": "0 0 0 0 #ffffff",
+            "--ck-connectbutton-hover-color": "rgba(250, 230, 220, 1)",
+            "--ck-connectbutton-hover-background": "#DF612B",
+            "--ck-connectbutton-hover-box-shadow": "0 0 0 0 #ffffff",
+            "--ck-connectbutton-active-color": "rgba(250, 230, 220, 1)",
+            "--ck-connectbutton-active-background": "#EAECF1",
+            "--ck-connectbutton-active-box-shadow": "0 0 0 0 #ffffff",
+          }}
+        >
+          {children}
+        </ConnectKitProvider>
       </QueryClientProvider>
     </WagmiProvider>
   );

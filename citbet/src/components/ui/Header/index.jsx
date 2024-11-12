@@ -1,6 +1,8 @@
 import styles from "./Header.module.css";
+import { ConnectKitButton } from "connectkit";
 
 import Betrea from "../../../assets/betrea.svg";
+import BTC from "../../../assets/btc.svg";
 
 function Header() {
   return (
@@ -12,12 +14,23 @@ function Header() {
       </div>
       <div className={styles.cashier_container}>
         <div className={styles.cashier_inner_container}>
-          <div>Balance</div>
-          <div>Cashier</div>
+          <div className={styles.balance_container}>
+            <div className={styles.balance_image_container}>
+              <img src={BTC} alt="" className={styles.btc_image} />
+            </div>
+            <div className={styles.balance_text_container}>
+              <p className={styles.balance_text}>0,001</p>
+            </div>
+          </div>
+          <div className={styles.cashier_button_container}>
+            <h1 className={styles.cashier_text}>Cashier</h1>
+          </div>
         </div>
       </div>
       <div className={styles.connect_container}>
-        <div>Login</div>
+        <div className={styles.connect}>
+          <ConnectKitButton />
+        </div>
       </div>
     </div>
   );

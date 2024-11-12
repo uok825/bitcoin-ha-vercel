@@ -1,0 +1,16 @@
+.container {
+    display: flex;
+    height: calc(100vh - 60px);
+    overflow: hidden !important;
+    position: relative;
+}
+
+.sanat {
+    flex-shrink: 0;
+    display: block;
+    position: absolute;
+    width: 100vw;
+    left: -5vw;
+    top: -12vh;
+    /* scale: 0.95; */
+}

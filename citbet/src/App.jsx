@@ -1,13 +1,13 @@
-import "./App.css";
+import styles from "./App.module.css";
 import "./lib/firebase";
 import { useEffect } from "react";
-import { ConnectKitButton } from "connectkit";
 import { useAccount } from "wagmi";
 
-import { auth, signInWithGoogle, signOut } from "./lib/auth";
 import { getUser } from "./lib/storage";
 
-import { Header } from "./components";
+import { Header, Sidebar } from "./components";
+
+import SVG from "./assets/sanat.svg";
 
 function App() {
   const account = useAccount();
@@ -20,13 +20,16 @@ function App() {
   }, [account]);
 
   return (
-    <>
+    <div>
       <Header />
-      <ConnectKitButton />
-      <p onClick={() => signInWithGoogle()}>selam</p>
+      <div className={styles.container}>
+        <img src={SVG} alt="" className={styles.sanat} />
+        <Sidebar />
+      </div>
+      {/* <p onClick={() => signInWithGoogle()}>selam</p>
       <p onClick={() => console.log(auth?.currentUser)}>auth</p>
-      <p onClick={() => signOut()}>sign out</p>
-    </>
+      <p onClick={() => signOut()}>sign out</p> */}
+    </div>
   );
 }
 
