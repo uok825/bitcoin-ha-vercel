@@ -24,3 +24,84 @@
 .input {
     background-color: transparent !important;
 }
+
+.bet_card_container {
+    display: block;
+    width: 626px;
+    z-index: 999;
+}
+
+.bet_card_inner_container {
+    background-color: rgba(255, 255, 255, 0.84);
+    backdrop-filter: blur(22px);
+    border-radius: 4px;
+    padding: 20px 36px;
+    margin-top: 72px;
+}
+
+.bet_card_title_container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.bet_card_title_container > h1 {
+    color: #7A3618;
+    font-weight: 400 !important;
+}
+
+.bet_buttons_container {
+    margin-top: 24px;
+    display: flex;
+    gap: 16px;
+}
+
+.bet_button_up {
+    flex: 1;
+    border: none;
+    outline: none;
+    stroke: none;
+    padding: 6px 0;
+    font-size: 20px;
+    font-weight: 400;
+    background-color: #2BDF46;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.bet_button_down {
+    flex: 1;
+    border: none;
+    outline: none;
+    stroke: none;
+    padding: 6px 0;
+    font-size: 20px;
+    font-weight: 400;
+    background-color: #DF2B2B;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.amount_container {
+    margin-top: 16px;
+}
+
+.amount_desc {
+    color: #FFC0A0;
+    font-size: 12px;
+    margin-bottom: 4px;
+}
+
+.amount_input {
+    width: 100%;
+    border: 1px solid #F7931A;
+    border-radius: 6px;
+    font-size: 16px;
+    color: #7E3719;
+    padding: 12px;
+    outline: none;
+    background-color: transparent;
+}

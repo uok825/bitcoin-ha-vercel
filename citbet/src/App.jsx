@@ -8,6 +8,7 @@ import { getUser } from "./lib/storage";
 import { Chatbox, Header, Sidebar } from "./components";
 
 import SVG from "./assets/sanat.svg";
+import BTCBig from "./assets/BTCBig.svg";
 import PaymentModal from "./components/ui/PaymentModal";
 
 import TextTransition, { presets } from "react-text-transition";
@@ -45,12 +46,30 @@ function App() {
         <img src={SVG} alt="" className={styles.sanat} />
         <div className={styles.inner_container}>
           <Sidebar />
-          <div>
-            <h1>
-              <TextTransition springConfig={presets.wobbly}>
-                {TEXTS[index % TEXTS.length]}
-              </TextTransition>
-            </h1>
+          <div className={styles.bet_card_container}>
+            <div className={styles.bet_card_inner_container}>
+              <div className={styles.bet_card_title_container}>
+                <img src={BTCBig} alt="" />
+                <h1>BTC Price Prediction</h1>
+              </div>
+              <h1>
+                <TextTransition springConfig={presets.wobbly}>
+                  {TEXTS[index % TEXTS.length]}
+                </TextTransition>
+              </h1>
+              <div className={styles.amount_container}>
+                <p className={styles.amount_desc}>Amount of bet</p>
+                <input type="text" className={styles.amount_input} />
+              </div>
+              <div className={styles.bet_buttons_container}>
+                <button className={styles.bet_button_up} id="up">
+                  Bet Up
+                </button>
+                <button className={styles.bet_button_down} id="down">
+                  Bet Down
+                </button>
+              </div>
+            </div>
           </div>
           <Chatbox />
         </div>
