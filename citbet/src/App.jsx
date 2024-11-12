@@ -12,7 +12,7 @@ import PaymentModal from "./components/ui/PaymentModal";
 
 import TextTransition, { presets } from "react-text-transition";
 
-const TEXTS = ["Forest", "Building", "Tree", "Color"];
+const TEXTS = ["88,746.74", "88,746.74", "87,577,54", "88,265.54"];
 
 function App() {
   const [paymentModalIsOpen, setIsPaymentOpen] = useState(true);
