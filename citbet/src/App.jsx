@@ -1,6 +1,6 @@
 import styles from "./App.module.css";
 import "./lib/firebase";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useAccount } from "wagmi";
 
 import { getUser } from "./lib/storage";
@@ -12,13 +12,28 @@ import BTCBig from "./assets/BTCBig.svg";
 import PaymentModal from "./components/ui/PaymentModal";
 
 import TextTransition, { presets } from "react-text-transition";
+import { mockBet } from "./utils/fetchFunctions";
 
 const TEXTS = ["88,746.74", "88,746.74", "87,577,54", "88,265.54"];
 
 function App() {
-  const [paymentModalIsOpen, setIsPaymentOpen] = useState(true);
+  const user = localStorage.getItem("user");
+  const parsedUser = JSON.parse(user);
+  const [paymentModalIsOpen, setIsPaymentOpen] = useState(false);
   const [index, setIndex] = useState(0);
+  const [isBetUp, setIsBetUp] = useState(false);
+  const [isBetDown, setIsBetDown] = useState(false);
   const account = useAccount();
+  const amountRef = useRef(null);
+
+  const handleBetUp = async () => {
+    isBetUp(false);
+    await mockBet(parsedUser.mSigAddress, amountRef.current.value, "Up");
+    isBetUp(true);
+  };
+  const handleBetDown = async () => {
+    await mockBet(parsedUser.mSigAddress, amountRef.current.value, "Down");
+  };
 
   useEffect(() => {
     if (account?.address) {
@@ -59,7 +74,11 @@ function App() {
               </h1>
               <div className={styles.amount_container}>
                 <p className={styles.amount_desc}>Amount of bet</p>
-                <input type="text" className={styles.amount_input} />
+                <input
+                  type="text"
+                  className={styles.amount_input}
+                  ref={amountRef}
+                />
               </div>
               <div className={styles.bet_buttons_container}>
                 <button className={styles.bet_button_up} id="up">

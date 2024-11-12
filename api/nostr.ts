@@ -3,7 +3,7 @@ const { finalizeEvent } = require("nostr-tools");
 import WebSocket from "ws";
 
 useWebSocketImplementation(WebSocket);
-const relayUrl = "wss://nostr.utkuomer.xyz";
+const relayUrl = "wss://relay.betrea.xyz";
 const maxRetries = 5;
 let retryCount = 0;
 
